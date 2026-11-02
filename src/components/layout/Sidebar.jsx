@@ -45,7 +45,7 @@ export default function Sidebar({
             </div>
 
             <span className="text-2xl font-black tracking-tight">
-              Svara<span className="text-fuchsia-400">.</span>
+              BeatBox
             </span>
           </div>
 
