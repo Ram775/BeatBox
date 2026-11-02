@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { TrackList } from "../components/TrackList";
+import { TrackList } from "../components/music/TrackList";
 import EmptyState from "../components/common/EmptyState";
 
 export default function SearchPage({

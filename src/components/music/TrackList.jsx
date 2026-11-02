@@ -1,4 +1,4 @@
-import TrackRow from "./music/TrackRow";
+import TrackRow from "../music/TrackRow";
 
 export function TrackList({
   songs = [],

@@ -1,5 +1,5 @@
 import SectionHeader from "../common/SectionHeader";
-import { TrackList } from "../TrackList";
+import { TrackList } from "../music/TrackList";
 
 export default function TrendingSection({
   songs,
