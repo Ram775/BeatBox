@@ -1,45 +1,72 @@
+
+import { memo } from "react";
+
 import Home from "../../pages/Home";
 import Discover from "../../pages/Discover";
 import SearchPage from "../../pages/Search";
 import LikedSongs from "../../pages/LikedSongs";
 import Playlist from "../../pages/Playlist";
 
-export default function PageRenderer({ tab, app }) {
+function PageRenderer({ tab, app }) {
+  const {
+    player,
+    library,
+    music,
+    query,
+    selectedPlaylist,
+    handleSearch,
+    setActiveTab,
+  } = app;
+
   const common = {
-    current: app.player.current,
-    playing: app.player.playing,
-    onPlay: app.player.playSong,
-    onLike: app.library.toggleLike,
-    isLiked: app.library.isLiked,
+    current: player.current,
+    playing: player.playing,
+    onPlay: player.playSong,
+    onLike: library.toggleLike,
+    isLiked: library.isLiked,
   };
 
-  switch (tab) {
-    case "Discover":
-      return <Discover songs={app.music.songs} onPlay={app.player.playSong} />;
+  const pages = {
+    Discover: (
+      <Discover
+        songs={music.songs}
+        onPlay={player.playSong}
+      />
+    ),
 
-    case "Search":
-      return (
-        <SearchPage
-          query={app.query}
-          songs={app.music.searchResults}
-          {...common}
-        />
-      );
+    Search: (
+      <SearchPage
+        query={query}
+        songs={music.searchResults}
+        {...common}
+      />
+    ),
 
-    case "Liked Songs":
-      return <LikedSongs songs={app.library.likedSongs} {...common} />;
+    "Liked Songs": (
+      <LikedSongs
+        songs={library.likedSongs}
+        {...common}
+      />
+    ),
 
-    case "Playlist":
-      return <Playlist playlist={app.selectedPlaylist} {...common} />;
+    Playlist: (
+      <Playlist
+        playlist={selectedPlaylist}
+        {...common}
+      />
+    ),
+  };
 
-    default:
-      return (
-        <Home
-          songs={app.music.songs}
-          {...common}
-          onMoodSelect={app.handleSearch}
-          onViewAll={() => app.setActiveTab("Search")}
-        />
-      );
-  }
+  return (
+    pages[tab] ?? (
+      <Home
+        songs={music.songs}
+        {...common}
+        onMoodSelect={handleSearch}
+        onViewAll={() => setActiveTab("Search")}
+      />
+    )
+  );
 }
+
+export default memo(PageRenderer);

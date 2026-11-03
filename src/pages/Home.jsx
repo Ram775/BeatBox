@@ -3,7 +3,7 @@ import MoodSection from "../components/home/MoodSection";
 import TrendingSection from "../components/home/TrendingSection";
 
 export default function Home({
-  songs,
+  songs = [],
   current,
   playing,
   onPlay,
@@ -14,21 +14,32 @@ export default function Home({
   onViewAll,
 }) {
   return (
-    <main className="px-5 py-6 md:px-8 md:py-8">
-      <HeroSection onPlay={() => songs?.[0] && onPlay(songs[0])} />
+    <main className="relative min-h-full overflow-hidden px-4 py-6 sm:px-5 md:px-8 md:py-8">
+      {/* Ambient background glow */}
+      <div className="pointer-events-none absolute -right-40 top-0 h-96 w-96 rounded-full bg-fuchsia-600/[0.04] blur-[120px]" />
+      <div className="pointer-events-none absolute -left-40 top-[500px] h-96 w-96 rounded-full bg-purple-600/[0.04] blur-[120px]" />
 
-      <MoodSection onMoodSelect={onMoodSelect} />
+      <div className="relative mx-auto flex max-w-[1600px] flex-col gap-8 sm:gap-10">
+        {/* Hero */}
+        <HeroSection
+          onPlay={() => songs?.[0] && onPlay?.(songs[0])}
+        />
 
-      <TrendingSection
-        songs={songs}
-        current={current}
-        playing={playing}
-        onPlay={onPlay}
-        onLike={onLike}
-        isLiked={isLiked}
-        onMore={onMore}
-        onViewAll={onViewAll}
-      />
+        {/* Mood Selection */}
+        <MoodSection onMoodSelect={onMoodSelect} />
+
+        {/* Trending Tracks */}
+        <TrendingSection
+          songs={songs}
+          current={current}
+          playing={playing}
+          onPlay={onPlay}
+          onLike={onLike}
+          isLiked={isLiked}
+          onMore={onMore}
+          onViewAll={onViewAll}
+        />
+      </div>
     </main>
   );
 }
