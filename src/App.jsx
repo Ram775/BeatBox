@@ -1,4 +1,5 @@
 import useSvaraApp from "./hooks/useSvaraApp";
+
 import MainLayout from "./components/layout/MainLayout";
 import Header from "./components/layout/Header";
 import PageRenderer from "./components/layout/PageRenderer";
@@ -7,36 +8,61 @@ import MusicPlayer from "./components/music/MusicPlayer";
 export default function App() {
   const app = useSvaraApp();
 
+  const {
+    activeTab,
+    setActiveTab,
+    query,
+    setQuery,
+    handleSearch,
+    library,
+    player,
+    playPrevious,
+    playNext,
+    volume,
+    changeVolume,
+  } = app;
+
+  const currentSong = player.current;
+
   return (
     <MainLayout
-      activeTab={app.activeTab}
-      setActiveTab={app.setActiveTab}
-      likedCount={app.library.likedSongs.length}
-      playlists={app.library.playlists}
-      onCreatePlaylist={app.library.createPlaylist}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      likedCount={library.likedSongs.length}
+      playlists={library.playlists}
+      onCreatePlaylist={library.createPlaylist}
     >
-      <Header
-        query={app.query}
-        setQuery={app.setQuery}
-        onSearch={app.handleSearch}
-      />
+      <div className="relative min-h-screen">
+        {/* Main application content */}
+        <div className="relative z-10">
+          <Header
+            query={query}
+            setQuery={setQuery}
+            onSearch={handleSearch}
+          />
 
-      <PageRenderer tab={app.activeTab} app={app} />
+          <PageRenderer
+            tab={activeTab}
+            app={app}
+          />
+        </div>
 
-      <MusicPlayer
-        current={app.player.current}
-        playing={app.player.playing}
-        progress={app.player.progress}
-        duration={app.player.duration}
-        onPlayPause={() => app.player.playSong(app.player.current)}
-        onPrevious={app.playPrevious}
-        onNext={app.playNext}
-        onSeek={app.player.seek}
-        liked={app.library.isLiked(app.player.current)}
-        onLike={() => app.library.toggleLike(app.player.current)}
-        volume={app.volume}
-        onVolumeChange={app.changeVolume}
-      />
+        {/* Persistent music player */}
+        <MusicPlayer
+          current={currentSong}
+          playing={player.playing}
+          progress={player.progress}
+          duration={player.duration}
+          onPlayPause={() => player.playSong(currentSong)}
+          onPrevious={playPrevious}
+          onNext={playNext}
+          onSeek={player.seek}
+          liked={library.isLiked(currentSong)}
+          onLike={() => library.toggleLike(currentSong)}
+          volume={volume}
+          onVolumeChange={changeVolume}
+        />
+      </div>
     </MainLayout>
   );
 }
